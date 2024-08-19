@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\LightDeviceController;
+use App\Http\Controllers\TemperatureSensorController;
+use App\Http\Controllers\SecurityDeviceController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,5 +45,21 @@ Route::middleware('auth:admin')->group(function () {
     Route::patch('/admin/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
     Route::delete('/admin/profile', [AdminProfileController::class, 'destroy'])->name('admin.profile.destroy');
 });
+
+
+// Devices Route
+Route::resource('light-devices', LightDeviceController::class)->middleware('auth');
+Route::resource('temperature-sensors', TemperatureSensorController::class)->middleware('auth');
+Route::resource('security-devices', SecurityDeviceController::class)->middleware('auth');
+
+//Route to Add a new device
+Route::get('/create-device', function () {
+    return view('create');
+})->name('create');
+
+//Route to Edit a device
+Route::get('/edit-device', function () {
+    return view('edit');
+})->name('edit');
 
 require __DIR__.'/admin-auth.php';
